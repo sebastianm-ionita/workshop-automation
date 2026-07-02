@@ -1,4 +1,4 @@
-nano: Publish Python Docker Container
+name: Publish Python Docker Container
 
 on:
   push:
