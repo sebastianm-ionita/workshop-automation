@@ -1,0 +1,34 @@
+nano: Publish Python Docker Container
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-push-python:
+    runs-on: ubuntu-latest
+
+# Permisiuni pentru a putea scrie în secțiunea de Packages (GHCR)
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      # Autentificare la GitHub Container Registry
+      - name: Authenticate cu GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Build și Push pentru imaginea de Python
+      - name: Build and Push Python Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./python3-hello   # <--- Aici indicăm noul folder
+          push: true
+          tags: ghcr.io/${{ github.repository }}/python3-hello:latest
