@@ -1,0 +1,23 @@
+name: Code Verification (CI)
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+  steps:
+    - name: Checkout repo-code
+      uses: actions/checkout@v4
+  
+    # Installs the GCC compiler on the cloud Linux runner
+    - name: Install GCC
+      run: sudo apt-get update && sudo apt-get install -y gcc
+
+    # Compiles the program exactly as you would locally
+    - name: Compile C program
+      run: gcc c-bye/bye.c -o c-bye/bye
+
+    # Runs the resulting binary to ensure it executes successfully
+    - name: Run application
+      run: ./c-bye/bye
